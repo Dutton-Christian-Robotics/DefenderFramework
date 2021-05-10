@@ -70,6 +70,10 @@ abstract class DefenderBotSystem implements DefenderEventSource {
         return (AxesOrder) configuration.get(key);
     }
 
+    public DefenderBotPosition configDefenderBotPosition(String key) {
+        return (DefenderBotPosition) configuration.get(key);
+    }
+
     public ArrayList<DefenderEvent> gatherEvents() {
         return new ArrayList<>();
     }

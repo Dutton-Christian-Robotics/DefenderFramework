@@ -23,7 +23,11 @@ public class DefenderEvent {
     }
 
     public boolean matches(DefenderEvent other) {
-        return (this.source == other.source) && (this.type == other.type);
+        boolean doTheyMatch =( this.source == other.source) && (this.type == other.type);
+        if (hasPayload()) {
+            doTheyMatch = doTheyMatch && payload.matches(other.getPayload());
+        }
+        return doTheyMatch;
     }
 
     public boolean hasPayload() { return payload != null; }
@@ -34,6 +38,28 @@ public class DefenderEvent {
     public void setPayload(DefenderStateVariable payload) {
         this.payload = payload;
     }
+
+    public DefenderEvent copyWithPayload(DefenderStateVariable payload) {
+        DefenderEvent theCopy = new DefenderEvent(source, type, payload);
+        return theCopy;
+    }
+
+    public DefenderEvent copyWithPayload(int v) {
+        return copyWithPayload(new DefenderStateVariable("payload", v));
+    }
+
+    public DefenderEvent copyWithPayload(double v) {
+        return copyWithPayload(new DefenderStateVariable("payload", v));
+    }
+
+    public DefenderEvent copyWithPayload(boolean v) {
+        return copyWithPayload(new DefenderStateVariable("payload", v));
+    }
+
+    public DefenderEvent copyWithPayload(String v) {
+        return copyWithPayload(new DefenderStateVariable("payload", v));
+    }
+
 
 
 

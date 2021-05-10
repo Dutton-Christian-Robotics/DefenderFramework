@@ -73,4 +73,5 @@ abstract class DefenderBotConfiguration {
         }
     }
 
+
 }

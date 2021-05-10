@@ -1,9 +1,6 @@
 package org.firstinspires.ftc.teamcode.dcs15815;
 
-import com.qualcomm.robotcore.util.ElapsedTime;
-
 import java.lang.reflect.Field;
-import java.lang.reflect.Method;
 
 public class DriveToPositionState extends DefenderState {
     private DefenderBotPosition destination;
@@ -31,7 +28,7 @@ public class DriveToPositionState extends DefenderState {
             // I don't now why I had to write it like this, but I was having a lot of trouble
             // getting this to work.
             Field f = stateMachine.bot.getClass().getField("navigation");
-            ((DefenderCanNavigateToPosition)f.get(stateMachine.bot)).driveToPosition(destination);
+            ((DefenderBotCanNavigateToPosition)f.get(stateMachine.bot)).driveToPosition(destination);
 //            ((DefenderCanNavigateToPosition)stateMachine.bot.navigation).driveToPosition(destination);
         } catch (Exception e) {
             System.out.println("Problem trying to driveToPosition: " + e.toString());

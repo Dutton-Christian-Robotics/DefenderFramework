@@ -15,7 +15,7 @@ public class WaitState extends DefenderState {
     @Override
     public void beforeStart() {
         timer.reset();
-        System.out.println("Beginning to wait");
+//        System.out.println("Beginning to wait");
     }
 
     @Override

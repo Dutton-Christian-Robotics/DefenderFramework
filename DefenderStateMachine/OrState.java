@@ -15,25 +15,34 @@ public class OrState extends CompoundState {
         return this;
     }
 
+    public void beforeState() {
+        isFinished = false;
+    }
+
 
     @Override
     public void run() {
-        // not sure what goes in here! Do we KEEP creating a thread for each state
-        // or is it created and run once? I think it needs to be the former, for example,
-        // to make sure that event states get updated lists of events...
-        isFinished = false;
 
         // this could be a problem. Could we have collision where one copy of the thread is still running
         // when another starts?
         for (DefenderState s : states) {
-            isFinished = isFinished || s.isFinished();
-            if (!isFinished && !s.isFinished()) {
-                Thread t = new Thread(() -> s.run());
-                t.start();
-            } else {
-                isFinished = true;
+            if (!s.hasStateMachine()) {
+                s.setStateMachine(stateMachine);
             }
-
+//            isFinished = isFinished || s.isFinished();
+            if (isFinished) {
+                break;
+            }
+            if (!s.isFinished()) {
+                Thread t = new Thread(() -> {
+                   s.run();
+                   if (s.isFinished() && s.hasNextState()) {
+                       setNextState(s.nextState);
+                   }
+                    isFinished = isFinished || s.isFinished();
+                });
+                t.start();
+            }
         }
 
 //        isFinished = true;

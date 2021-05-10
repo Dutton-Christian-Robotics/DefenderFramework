@@ -75,4 +75,8 @@ abstract public class DefenderFsmOpMode extends LinearOpMode {
         stateMachine.setState(s);
     }
 
+    public DefenderBotPosition configDefenderBotPosition(String key) {
+        return (DefenderBotPosition) bot.configuration.get(key);
+    }
+
 }

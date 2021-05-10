@@ -4,9 +4,8 @@ import java.util.ArrayList;
 
 public class DefenderState {
     protected String label;
-    protected DefenderState nextState;
+    public DefenderState nextState;
     protected boolean isFinished;
-
     protected DefenderStateMachine stateMachine;
 
     DefenderState() {
@@ -18,21 +17,24 @@ public class DefenderState {
         setStateMachine(sm);
     }
 
+    public DefenderStateMachine getStateMachine() {
+        return stateMachine;
+    }
+
     public void setStateMachine(DefenderStateMachine stateMachine) {
         this.stateMachine = stateMachine;
     }
 
-
-    public void beforeStart() {
-
+    public boolean hasStateMachine() {
+        return stateMachine != null;
     }
 
-    public void beforeStop() {
 
-    }
+    public void beforeStart() { }
 
-    public void run() {
-    }
+    public void beforeStop() {  }
+
+    public void run() { }
 
     public boolean isFinished() {
         return isFinished;
@@ -45,8 +47,19 @@ public class DefenderState {
         return nextState != null;
     }
 
+    public void setNextState(DefenderState ns) {
+        nextState = ns;
+    }
+
+
     public void andThen(DefenderState ns) {
         nextState = ns;
+    }
+
+    public void andThenAfterPause(long wait, DefenderState ns) {
+        WaitState waitState = new WaitState(wait);
+        andThen(waitState);
+        waitState.andThen(ns);
     }
 
     public AndState and(DefenderState s) {
@@ -61,6 +74,18 @@ public class DefenderState {
         newOrState.addState(this);
         newOrState.addState(s);
         return newOrState;
+    }
+
+    public void follows(DefenderState ... states) {
+        for (DefenderState s : states) {
+            s.andThen(this);
+        }
+    }
+
+    public void followsAfterPause(long wait, DefenderState ... states) {
+        for (DefenderState s : states) {
+            s.andThenAfterPause(wait, this);
+        }
     }
 
 }

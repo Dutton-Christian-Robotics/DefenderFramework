@@ -13,6 +13,7 @@ public class CompoundState extends DefenderState {
 
     public void addState(DefenderState s) {
         states.add(s);
+        s.setStateMachine(stateMachine);
     }
 
     @Override

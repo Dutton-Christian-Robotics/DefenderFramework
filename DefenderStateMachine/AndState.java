@@ -25,6 +25,9 @@ public class AndState extends CompoundState {
         // this could be a problem. Could we have collision where one copy of the thread is still running
         // when another starts?
         for (DefenderState s : states) {
+            if (!s.hasStateMachine()) {
+                s.setStateMachine(stateMachine);
+            }
             isFinished = isFinished && s.isFinished();
             if (!isFinished && !s.isFinished()) {
                 Thread t = new Thread(() -> s.run());
